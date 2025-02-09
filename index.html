@@ -1,160 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FractalFlower | Ty</title>
+    <title>FractalFlower | Updated</title>
     <link rel="icon" type="image/png" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sankofa+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
     <style>
         * {
-            font-family: "Sankofa Display", sans-serif !important;
-        }
-        body {
-            font-family: "Sankofa Display", sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #0c0c1d;
-            color: #00ffff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        .main-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            transition: all 0.3s ease;
-        }
-        .simulation-container {
-            position: relative;
-            flex: 1;
-            overflow: hidden;
-        }
-        #simulationCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-        .overlay {
-            position: absolute;
-            padding: 8px;
-            background-color: rgba(12, 12, 29, 0.8);
-            border-radius: 5px;
-            font-size: 0.9rem;
-            border: 1px solid #00ffff;
-        }
-        #statsOverlay {
-            bottom: 10px;
-            left: 10px;
-            display: none;
-        }
-        .side-panel {
-            width: 250px;
-            background-color: rgba(26, 26, 58, 0.9);
-            padding: 20px;
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            transition: transform 0.3s ease, width 0.3s ease;
-            position: relative;
+            font-family: "Quicksand", sans-serif !important;
+            touch-action: none;
         }
-        .side-panel.collapsed {
-            transform: translateX(100%);
-            width: 0;
-            padding: 0;
-        }
-        .toggle-panel {
-            position: absolute;
-            left: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(26, 26, 58, 0.9);
-            color: #00ffff;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px 0 0 5px;
-            transition: transform 0.3s ease;
-            z-index: 10;
-        }
-        .toggle-panel:hover {
-            background-color: rgba(0, 255, 255, 0.2);
-        }
-        .toggle-panel.collapsed {
-            transform: translateY(-50%) rotate(180deg);
-            border-radius: 0 5px 5px 0;
-        }
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        button {
-            font-family: Arial, sans-serif;
-            font-size: 1rem;
-            padding: 10px 15px;
-            cursor: pointer;
-            background-color: #1a1a3a;
-            color: #00ffff;
-            border: 2px solid #00ffff;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        button:hover {
-            background-color: #00ffff;
-            color: #1a1a3a;
-        }
-        .theme-selector {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
-            margin-top: 10px;
-            background-color: rgba(26, 26, 58, 0.8);
-            border-radius: 5px;
-            padding: 10px;
-            border: 1px solid #00ffff;
-        }
-        .theme-option {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-            cursor: pointer;
+
+        body {
+            background: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            overflow: hidden;
         }
+
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            max-height: 96vh;
+            background: #2a2a2a;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            padding: 10px;
+            gap: 0px;
+            position: relative;
+        }
+
+        .simulation-container {
+            position: relative;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        }
+
+        #simulationCanvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            touch-action: none;
+        }
+
+        .overlay {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #statsOverlay {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .side-panel {
+            position: relative;
+            background: #222;
+            border-radius: 15px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 100%;
+            width: 250px;
+            transition: all 0.3s ease;
+            overflow: visible;
+        }
+
+        .side-panel.collapsed {
+            width: 0;
+            padding: 0;
+            margin: 0;
+            gap: 0;
+        }
+
+        .side-panel.collapsed .control-group,
+        .side-panel.collapsed .theme-selector {
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .toggle-panel {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #2a2a2a;
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px 0 0 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            visibility: visible !important;
+        }
+
+        .toggle-panel:hover {
+            background: #333;
+        }
+
+        .toggle-panel svg {
+            transition: transform 0.3s ease;
+        }
+
+        .side-panel.collapsed .toggle-panel svg {
+            transform: rotate(180deg);
+        }
+
+        .action-button {
+            background: #2a2a2a;
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            min-height: 44px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .action-button svg {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.2s ease;
+        }
+
+        .action-button:hover {
+            background: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .action-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            width: 100%;
+        }
+
+        #speedControl {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #444;
+            border-radius: 2px;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        #speedControl::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #speedControl::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+          
+            gap: 8px;
+            padding: 10px;
+            background: #333;
+            border-radius: 8px;
+            height: auto;
+            width: 100%;
+        }
+
+        .theme-option {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 4px;
+            background: #2a2a2a;
+        }
+
         .theme-option:hover {
             transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.2);
         }
-        .theme-option.selected::after {
-            content: '✓';
-            color: white;
-            font-size: 24px;
-            text-shadow: 0 0 3px black;
+
+        .theme-option.selected {
+            border-color: #fff;
         }
-        .color-preview {
-            width: 12px;
-            height: 12px;
+
+        .theme-option .color-preview {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            margin: 0 -2px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 8px;
+                gap: 8px;
+            }
+
+            .side-panel {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                width: auto;
+                max-width: 250px;
+                height: auto;
+                max-height: 80vh;
+                z-index: 100;
+            }
+
+            .side-panel.collapsed {
+                transform: translateX(calc(100% + 20px));
+            }
+
+            .toggle-panel {
+                left: -35px;
+                padding: 8px;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .action-button {
+                flex: 1;
+                min-width: 40px;
+            }
         }
     </style>
 </head>
-
 <body>
     <div class="main-container">
         <div class="simulation-container">
@@ -162,14 +294,29 @@
             <div id="statsOverlay" class="overlay"></div>
         </div>
         <div class="side-panel">
-            <button class="toggle-panel">◀</button>
-            <div class="controls">
-                <button id="startStopBtn">Start</button>
-                <button id="resetBtn"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#00ffff"><path d="M480-90q-70 0-131.13-26.6-61.14-26.6-106.4-71.87-45.27-45.26-71.87-106.4Q144-356 144-426h72q0 109 77.5 186.5T480-162q109 0 186.5-77.5T744-426q0-109-77.5-186.5T479.61-690H474l51 51-51 51-138-138 138-138 51 51-52 51h7q70 0 131.13 26.6 61.14 26.6 106.4 71.87 45.27 45.26 71.87 106.4Q816-496 816-426t-26.6 131.13q-26.6 61.14-71.87 106.4-45.26 45.27-106.4 71.87Q550-90 480-90Z"/></svg></button>
+            <button class="toggle-panel">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor">
+                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
+                </svg>
+            </button>
+            <div class="control-group">
+                <div class="action-buttons">
+                    <button class="action-button" id="startStopBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor">
+                            <path d="M320-200v-560l440 280-440 280Z"/>
+                        </svg>
+                    </button>
+                    <button class="action-button" id="resetBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor">
+                            <path d="M480-90q-70 0-131.13-26.6-61.14-26.6-106.4-71.87-45.27-45.26-71.87-106.4Q144-356 144-426h72q0 109 77.5 186.5T480-162q109 0 186.5-77.5T744-426q0-109-77.5-186.5T479.61-690H474l51 51-51 51-138-138 138-138 51 51-52 51h7q70 0 131.13 26.6 61.14 26.6 106.4 71.87 45.27 45.26 71.87 106.4Q816-496 816-426t-26.6 131.13q-26.6 61.14-71.87 106.4-45.26 45.27-106.4 71.87Q550-90 480-90Z"/>
+                        </svg>
+                    </button>
+                </div>
                 <input type="range" id="speedControl" min="1" max="100" value="50">
-                <span id="speedValue">50</span>
             </div>
-            <div class="theme-selector" id="themeSelector"></div>
+            <div class="control-group">
+                <div id="themeSelector" class="theme-selector"></div>
+            </div>
         </div>
     </div>
     <script>
@@ -181,15 +328,14 @@
         const sidePanel = document.querySelector('.side-panel');
         const togglePanel = document.querySelector('.toggle-panel');
         const speedControl = document.getElementById('speedControl');
-        const speedValue = document.getElementById('speedValue');
         const themeSelector = document.getElementById('themeSelector');
-    
+
         let width, height;
         let isRunning = false;
         let rootNodes = [];
         let particles = [];
         let simulationSpeed = 1;
-    
+
         const colorThemes = [
             { name: 'Neon Twilight', primary: '#FF00FF', secondary: '#00FFFF', tertiary: '#8A2BE2', quaternary: '#4169E1', background: '#0C0C0C' },
             { name: 'Emerald Enigma', primary: '#00A000', secondary: '#32CD32', tertiary: '#3CB371', quaternary: '#2E8B57', background: '#002200' },
@@ -197,7 +343,7 @@
             { name: 'Sapphire Seas', primary: '#0000CD', secondary: '#4169E1', tertiary: '#1E90FF', quaternary: '#00BFFF', background: '#00008B' }
         ];
         let currentTheme = colorThemes[0];
-    
+
         class Node {
             constructor(x, y, angle, length, depth = 0, color, rootIndex) {
                 this.x = x;
@@ -219,7 +365,7 @@
                 this.particleCount = 0;
                 this.particlesNeededToGrow = 2;
             }
-    
+
             update() {
                 if (this.currentLength < this.targetLength) {
                     this.currentLength += this.growthSpeed;
@@ -231,10 +377,10 @@
                     this.branch();
                     this.particleCount -= this.particlesNeededToGrow;
                 }
-    
+
                 this.children.forEach(child => child.update());
             }
-    
+
             branch() {
                 const spreadAngle = Math.PI / 2;
                 const branchAngle = this.angle + (Math.random() - 0.5) * spreadAngle;
@@ -243,7 +389,7 @@
                 const newNode = new Node(this.targetX, this.targetY, branchAngle, branchLength, this.depth + 1, this.color, this.rootIndex);
                 this.children.push(newNode);
             }
-    
+
             draw() {
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y);
@@ -253,16 +399,16 @@
                 ctx.strokeStyle = this.color;
                 ctx.lineWidth = Math.max(3 - this.depth * 0.2, 0.5);
                 ctx.stroke();
-    
+
                 this.children.forEach(child => child.draw());
             }
-    
+
             receiveParticle() {
                 this.particleCount++;
                 this.energy = Math.min(this.energy + 10, 100);
             }
         }
-    
+
         class Particle {
             constructor(startNode, color) {
                 this.startNode = startNode;
@@ -272,10 +418,10 @@
                 this.radius = 2;
                 this.progress = 0;
             }
-    
+
             update() {
                 this.progress += this.speed / this.currentNode.targetLength;
-    
+
                 if (this.progress >= 1) {
                     if (this.currentNode.children.length === 0) {
                         this.currentNode.receiveParticle();
@@ -285,61 +431,61 @@
                         this.currentNode = this.selectNextNode(this.currentNode);
                     }
                 }
-    
+
                 return true;
             }
-    
+
             selectNextNode(node) {
                 if (node.children.length === 0) return node;
                 return node.children[Math.floor(Math.random() * node.children.length)];
             }
-    
+
             draw() {
                 const x = this.currentNode.x + (this.currentNode.targetX - this.currentNode.x) * this.progress;
                 const y = this.currentNode.y + (this.currentNode.targetY - this.currentNode.y) * this.progress;
-    
+
                 ctx.beginPath();
                 ctx.arc(x, y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
             }
         }
-    
+
         function initSimulation() {
             width = canvas.width;
             height = canvas.height;
             rootNodes = [];
             particles = [];
-    
+
             const centerX = width / 2;
             const centerY = height / 2;
             const numInitialNodes = 12;
-    
+
             for (let i = 0; i < numInitialNodes; i++) {
                 const angle = (i / numInitialNodes) * Math.PI * 2;
                 const color = currentTheme[Object.keys(currentTheme)[(i % 4) + 1]];
                 rootNodes.push(new Node(centerX, centerY, angle, 50, 0, color, i));
             }
         }
-    
+
         function updateSimulation() {
             rootNodes.forEach(node => node.update());
             updateParticles();
             spawnParticles();
         }
-    
+
         function drawSimulation() {
             ctx.fillStyle = currentTheme.background;
             ctx.fillRect(0, 0, width, height);
-    
+
             rootNodes.forEach(node => node.draw());
             particles.forEach(particle => particle.draw());
         }
-    
+
         function updateParticles() {
             particles = particles.filter(particle => particle.update());
         }
-    
+
         function spawnParticles() {
             rootNodes.forEach((root) => {
                 if (Math.random() < 0.6 * simulationSpeed) {
@@ -347,121 +493,173 @@
                 }
             });
         }
-    
 
-        function countNodes(node) {
-            let count = 1;
-            for (let child of node.children) {
-                count += countNodes(child);
-            }
-            return count;
-        }
-    
         function gameLoop(timestamp) {
             if (isRunning) {
                 updateSimulation();
                 drawSimulation();
-                
                 requestAnimationFrame(gameLoop);
             }
         }
-    
+
         function resizeCanvas() {
-            const newWidth = window.innerWidth;
-            const newHeight = window.innerHeight;
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            width = canvas.width;
+            height = canvas.height;
             
-            if (width !== newWidth || height !== newHeight) {
-                canvas.width = newWidth;
-                canvas.height = newHeight;
-                width = newWidth;
-                height = newHeight;
-                
-                initSimulation();
-            }
-            
+            initSimulation();
             drawSimulation();
         }
-    
+
         function initThemeSelector() {
             themeSelector.innerHTML = '';
             colorThemes.forEach((theme, index) => {
                 const themeOption = document.createElement('div');
                 themeOption.className = 'theme-option';
                 themeOption.style.backgroundColor = theme.background;
-                themeOption.innerHTML = `
-                    <div class="color-preview" style="background-color: ${theme.primary}"></div>
-                    <div class="color-preview" style="background-color: ${theme.secondary}"></div>
-                    <div class="color-preview" style="background-color: ${theme.tertiary}"></div>
-                    <div class="color-preview" style="background-color: ${theme.quaternary}"></div>
-                `;
+                
+                const previewContainer = document.createElement('div');
+                previewContainer.style.display = 'flex';
+                previewContainer.style.gap = '2px';
+                previewContainer.style.flexWrap = 'nowrap';
+                
+                [theme.primary, theme.secondary, theme.tertiary].forEach(color => {
+                    const preview = document.createElement('div');
+                    preview.className = 'color-preview';
+                    preview.style.backgroundColor = color;
+                    previewContainer.appendChild(preview);
+                });
+                
+                themeOption.appendChild(previewContainer);
+                
+                if (theme === currentTheme) {
+                    themeOption.classList.add('selected');
+                }
+                
                 themeOption.addEventListener('click', () => selectTheme(index));
                 themeSelector.appendChild(themeOption);
             });
-            updateSelectedTheme();
         }
-    
+
         function selectTheme(index) {
             currentTheme = colorThemes[index];
             updateSelectedTheme();
             initSimulation();
             drawSimulation();
         }
-    
+
         function updateSelectedTheme() {
             const themeOptions = document.querySelectorAll('.theme-option');
             themeOptions.forEach((option, index) => {
                 option.classList.toggle('selected', colorThemes[index] === currentTheme);
             });
         }
-    
-        // Event Listeners
-        window.addEventListener('resize', resizeCanvas);
-    
+
+        function updatePanelVisibility() {
+            const isCollapsed = sidePanel.classList.contains('collapsed');
+            const controls = document.querySelectorAll('.control-group, .theme-selector');
+            const isMobile = window.innerWidth <= 768;
+            
+            requestAnimationFrame(() => {
+                sidePanel.style.width = isCollapsed ? '0' : '250px';
+                sidePanel.style.padding = isCollapsed ? '0' : '10px';
+                
+                controls.forEach(element => {
+                    element.style.display = isCollapsed ? 'none' : 
+                        (element.classList.contains('theme-selector') ? 'grid' : 'flex');
+                    element.style.opacity = isCollapsed ? '0' : '1';
+                    element.style.pointerEvents = isCollapsed ? 'none' : 'all';
+                });
+                
+                if (isMobile) {
+                    Object.assign(sidePanel.style, {
+                        position: 'fixed',
+                        right: '10px',
+                        bottom: '10px',
+                        top: 'auto'
+                    });
+                } else {
+                    Object.assign(sidePanel.style, {
+                        position: 'relative',
+                        right: '0',
+                        top: '0',
+                        bottom: '0'
+                    });
+                }
+                
+                requestAnimationFrame(() => {
+                    resizeCanvas();
+                });
+            });
+        }
+
         startStopBtn.addEventListener('click', () => {
             isRunning = !isRunning;
-            startStopBtn.textContent = isRunning ? 'Stop' : 'Start';
+            const svg = startStopBtn.querySelector('svg');
+            svg.innerHTML = isRunning 
+                ? '<path d="M520-200h80v-560h-80v560Zm-160 0h80v-560h-80v560Z"/>'
+                : '<path d="M320-200v-560l440 280-440 280Z"/>';
+            
+            startStopBtn.style.backgroundColor = isRunning ? '#333' : '#2a2a2a';
+            
             if (isRunning) {
                 requestAnimationFrame(gameLoop);
             }
         });
-    
+
         resetBtn.addEventListener('click', () => {
-            initSimulation();
-            drawSimulation();
-          
-        });
-    
-        togglePanel.addEventListener('click', () => {
-            sidePanel.classList.toggle('collapsed');
-            togglePanel.classList.toggle('collapsed');
-            
+            resetBtn.style.transform = 'scale(0.95)';
             setTimeout(() => {
-                const newWidth = window.innerWidth;
-                const newHeight = window.innerHeight;
-                
-                if (width !== newWidth || height !== newHeight) {
-                    canvas.width = newWidth;
-                    canvas.height = newHeight;
-                    width = newWidth;
-                    height = newHeight;
-                    
-                    initSimulation();
-                }
-                
-                drawSimulation();
-            }, 300);
+                resetBtn.style.transform = 'scale(1)';
+            }, 100);
+            initSimulation();
         });
-    
+
         speedControl.addEventListener('input', () => {
             simulationSpeed = speedControl.value / 50;
-            speedValue.textContent = `${speedControl.value}`;
         });
-    
-        // Initialization
+
+        togglePanel.addEventListener('click', () => {
+            sidePanel.classList.toggle('collapsed');
+            const svg = togglePanel.querySelector('svg');
+            svg.style.transform = sidePanel.classList.contains('collapsed') ? 'rotate(180deg)' : 'rotate(0deg)';
+            
+            requestAnimationFrame(() => {
+                updatePanelVisibility();
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                sidePanel.style.position = 'fixed';
+                sidePanel.style.right = '10px';
+                sidePanel.style.bottom = '10px';
+                sidePanel.style.top = 'auto';
+            } else {
+                sidePanel.style.position = 'relative';
+                sidePanel.style.right = '0';
+                sidePanel.style.top = '0';
+                sidePanel.style.bottom = '0';
+            }
+            updatePanelVisibility();
+        });
+
+        const resizeObserver = new ResizeObserver(entries => {
+            entries.forEach(() => {
+                requestAnimationFrame(() => {
+                    resizeCanvas();
+                });
+            });
+        });
+
+        resizeObserver.observe(canvas.parentElement);
+
         document.addEventListener('DOMContentLoaded', () => {
             initThemeSelector();
             resizeCanvas();
-            
         });
     </script>
 </body>
